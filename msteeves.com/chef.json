@@ -11,6 +11,10 @@
 
   },
 
+  "Conditions" : {
+
+  },
+  
   "Resources" : {
     "ChefServer" : {
       "Type" : "AWS::EC2::Instance"
