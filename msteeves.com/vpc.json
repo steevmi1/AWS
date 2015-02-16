@@ -22,7 +22,7 @@
         "Tags" : [
           {
             "Key" : "Name",
-            "Value" : "IGW for msteeves.com and raingods.net"
+            "Value" : "IGW for msteeves.com"
           },
           {
             "Key" : "Component",
@@ -30,7 +30,7 @@
           },
           {
             "Key" : "Domain",
-            "Value" : "Combined"
+            "Value" : "msteeves.com"
           }
         ]
       }
@@ -39,6 +39,21 @@
       "Type" : "AWS::EC2::VPCGatewayAttachment",
       "Properties" : {
         "InternetGatewayId" : {"Ref" : "msteevesIgw"},
+        "VpcId" : {"Ref" : "msteevesVpc"}
+      }
+    },
+    "msteevesDhcp" : {
+      "Type" : "AWS::EC2::DHCPOptions",
+      "Properties" : {
+        "DomainName" : "msteeves.com",
+        "DomainNameServers" : [ "AmazonProvidedDNS" ],
+        "NtpServers" : [ "208.75.89.4", "129.6.15.28", "69.167.160.102", "54.236.224.171"]
+      }
+    },
+    "DhcpVpcAssociation" : {
+      "Type" : "AWS::EC2::VPCDHCPOptionsAssociation",
+      "Properties" : {
+        "DhcpOptionsId" : {"Ref" : "msteevesDhcp"},
         "VpcId" : {"Ref" : "msteevesVpc"}
       }
     },
@@ -52,7 +67,7 @@
         "Tags" : [
           {
             "Key" : "Name",
-            "Value" : "VPC for msteeves.com and raingods.net"
+            "Value" : "VPC for msteeves.com"
           },
           {
             "Key" : "Component",
@@ -60,7 +75,7 @@
           },
           {
             "Key" : "Domain",
-            "Value" : "Combined"
+            "Value" : "msteeves.com"
           }
         ]
       }
@@ -68,7 +83,6 @@
     "msteevesPublic" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
-        "AvailabilityZone" : "us-west-2a",
         "CidrBlock" : "172.16.0.0/24",
         "VpcId" : {"Ref" : "msteevesVpc"},
         "Tags" : [
@@ -82,29 +96,7 @@
           },
           {
             "Key" : "Domain",
-            "Value" : "msteevesCom"
-          }
-        ]
-      }
-    },
-    "raingodsPublic" : {
-      "Type" : "AWS::EC2::Subnet",
-      "Properties" : {
-        "AvailabilityZone" : "us-west-2b",
-        "CidrBlock" : "172.16.1.0/24",
-        "VpcId" : {"Ref" : "msteevesVpc"},
-        "Tags" : [
-          {
-            "Key" : "Name",
-            "Value" : "Public subnet for raingods.net"
-          },
-          {
-            "Key" : "Component",
-            "Value" : "Infrastructure"
-          },
-          {
-            "Key" : "Domain",
-            "Value" : "raingodsNet"
+            "Value" : "msteeves.com"
           }
         ]
       }
@@ -112,7 +104,6 @@
     "msteevesPrivate" : {
       "Type" : "AWS::EC2::Subnet",
       "Properties" : {
-        "AvailabilityZone" : "us-west-2a",
         "CidrBlock" : "172.16.2.0/24",
         "VpcId" : {"Ref" : "msteevesVpc"},
         "Tags" : [
@@ -127,28 +118,6 @@
           {
             "Key" : "Domain",
             "Value" : "msteevesCom"
-          }
-        ]
-      }
-    },
-    "raingodsPrivate" : {
-      "Type" : "AWS::EC2::Subnet",
-      "Properties" : {
-        "AvailabilityZone" : "us-west-2b",
-        "CidrBlock" : "172.16.3.0/24",
-        "VpcId" : {"Ref" : "msteevesVpc"},
-        "Tags" : [
-          {
-            "Key" : "Name",
-            "Value" : "Private subnet for raingods.net"
-          },
-          {
-            "Key" : "Component",
-            "Value" : "Infrastructure"
-          },
-          {
-            "Key" : "Domain",
-            "Value" : "raingodsNet"
           }
         ]
       }
@@ -167,14 +136,6 @@
     "msteevesPrivateSubnet" : {
       "Description" : "Private subnet for msteeves.com",
       "Value" : {"Ref" : "msteevesPrivate"}
-    },
-    "raingodsPublicSubnet" : {
-      "Description" : "Public subnet for raingods.net",
-      "Value" : {"Ref" : "raingodsPublic"}
-    },
-    "raingodsPrivateSubnet" : {
-      "Description" : "Private subnet for raingods.net",
-      "Value" : {"Ref" : "raingodsPrivate"}
     }
   }
 }
