@@ -1,0 +1,40 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "CloudFormation template for chef server for msteeves.com and raingods.net",
+
+  "Parameters" : {
+
+  },
+
+  "Mappings" : {
+
+  },
+
+  "Resources" : {
+    "ChefServer" : {
+      "Type" : "AWS::EC2::Instance"
+      "Properties" : {
+        "ImageId" : "ami-e7b8c0d7",
+        "KeyName" : "msteeves.com",
+        "InstanceType" : "t2.micro",
+        "SecurityGroups" : [{ "Ref" : "ChefSecurityGroup" }]
+      }
+    },
+
+    "ChefSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "HTTPS and SSH access",
+        "SecurityGroupIngress" : [
+          {"IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "0.0.0.0/0"},
+          {"IpProtocol" : "tcp", "FromPort" : "443", "ToPort" : "443", "CidrIp" : "0.0.0.0/0"}
+        ]
+      }
+    }
+  },
+
+  "Outputs" : {
+
+  }
+}
