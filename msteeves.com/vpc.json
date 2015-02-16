@@ -16,6 +16,32 @@
   },
   
   "Resources" : {
+    "msteevesIgw" : {
+      "Type" : "AWS::EC2::InternetGateway",
+      "Properties" : {
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "IGW for msteeves.com and raingods.net"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "Combined"
+          }
+        ]
+      }
+    },
+    "igwAttachment" : {
+      "Type" : "AWS::EC2::VPCGatewayAttachment",
+      "Properties" : {
+        "InternetGatewayId" : {"Ref" : "msteevesIgw"},
+        "VpcId" : {"Ref" : "msteevesVpc"}
+      }
+    },
     "msteevesVpc" : {
       "Type" : "AWS::EC2::VPC",
       "Properties" : {
