@@ -1,0 +1,154 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "VPC and network setup for msteeves.com",
+
+  "Parameters" : {
+
+  },
+
+  "Mappings" : {
+
+  },
+
+  "Conditions" : {
+
+  },
+  
+  "Resources" : {
+    "msteevesVpc" : {
+      "Type" : "AWS::EC2::VPC",
+      "Properties" : {
+        "CidrBlock" : "172.16.0.0/20",
+        "EnableDnsSupport" : "true",
+        "EnableDnsHostnames" : "true",
+        "InstanceTenancy" : "default",
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "VPC for msteeves.com and raingods.net"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "Combined"
+          }
+        ]
+      }
+    },
+    "msteevesPublic" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : "us-west-2a",
+        "CidrBlock" : "172.16.0.0/24",
+        "VpcId" : {"Ref" : "msteevesVpc"},
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Public subnet for msteeves.com"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "msteevesCom"
+          }
+        ]
+      }
+    },
+    "raingodsPublic" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : "us-west-2b",
+        "CidrBlock" : "172.16.1.0/24",
+        "VpcId" : {"Ref" : "msteevesVpc"},
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Public subnet for raingods.net"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "raingodsNet"
+          }
+        ]
+      }
+    },
+    "msteevesPrivate" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : "us-west-2a",
+        "CidrBlock" : "172.16.2.0/24",
+        "VpcId" : {"Ref" : "msteevesVpc"},
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Private subnet for msteeves.com"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "msteevesCom"
+          }
+        ]
+      }
+    },
+    "raingodsPrivate" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : "us-west-2b",
+        "CidrBlock" : "172.16.3.0/24",
+        "VpcId" : {"Ref" : "msteevesVpc"},
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Private subnet for raingods.net"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "raingodsNet"
+          }
+        ]
+      }
+    }
+  },
+
+  "Outputs" : {
+    "VpcInfo" : {
+      "Description" : "VPC Information",
+      "Value" : { "Ref" : "msteevesVpc"}
+    },
+    "msteevesPublicSubnet" : {
+      "Description" : "Public subnet for msteeves.com",
+      "Value" : {"Ref" : "msteevesPublic"}
+    },
+    "msteevesPrivateSubnet" : {
+      "Description" : "Private subnet for msteeves.com",
+      "Value" : {"Ref" : "msteevesPrivate"}
+    },
+    "raingodsPublicSubnet" : {
+      "Description" : "Public subnet for raingods.net",
+      "Value" : {"Ref" : "raingodsPublic"}
+    },
+    "raingodsPrivateSubnet" : {
+      "Description" : "Private subnet for raingods.net",
+      "Value" : {"Ref" : "raingodsPrivate"}
+    }
+  }
+}
