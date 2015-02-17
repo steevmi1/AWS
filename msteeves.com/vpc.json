@@ -57,6 +57,41 @@
         "VpcId" : {"Ref" : "msteevesVpc"}
       }
     },
+    "msteevesRouting" : {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : {"Ref" : "msteevesVpc"},
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Route table for msteeves.com VPC"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "msteeves.com"
+          }
+        ]
+      }
+    },
+    "igwRoute" : {
+      "Type" : "AWS::EC2::Route",
+      "Properties" : {
+        "RouteTableId" : {"Ref" : "msteevesRouting"},
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "GatewayId" : {"Ref" : "msteevesIgw"}
+      }
+    },
+    "msteevesPublicRouting" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : {"Ref" : "msteevesRouting"},
+        "SubnetId" : {"Ref" : "msteevesPublic" }
+      }
+    },
     "msteevesVpc" : {
       "Type" : "AWS::EC2::VPC",
       "Properties" : {
