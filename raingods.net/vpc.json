@@ -57,6 +57,26 @@
         "VpcId" : {"Ref" : "raingodsVpc"}
       }
     },
+    "raingodsRouting" : {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : {"Ref" : "raingodsVpc"},
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Route table for raingods.net VPC"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "raingods.net"
+          }
+        ]
+      }
+    },
     "raingodsVpc" : {
       "Type" : "AWS::EC2::VPC",
       "Properties" : {
@@ -78,6 +98,21 @@
             "Value" : "raingods.net"
           }
         ]
+      }
+    },
+    "igwRoute" : {
+      "Type" : "AWS::EC2::Route",
+      "Properties" : {
+        "RouteTableId" : {"Ref" : "raingodsRouting"},
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "GatewayId" : {"Ref" : "raingodsIgw"}
+      }
+    },
+    "raingodsPublicRouting" : {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : {"Ref" : "raingodsRouting"},
+        "SubnetId" : {"Ref" : "raingodsPublic"}
       }
     },
     "raingodsPublic" : {
