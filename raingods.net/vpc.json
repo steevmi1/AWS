@@ -1,0 +1,141 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "VPC and network setup for raingods.net",
+
+  "Parameters" : {
+
+  },
+
+  "Mappings" : {
+
+  },
+
+  "Conditions" : {
+
+  },
+  
+  "Resources" : {
+    "raingodsIgw" : {
+      "Type" : "AWS::EC2::InternetGateway",
+      "Properties" : {
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "IGW for raingods.net"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "raingods.net"
+          }
+        ]
+      }
+    },
+    "igwAttachment" : {
+      "Type" : "AWS::EC2::VPCGatewayAttachment",
+      "Properties" : {
+        "InternetGatewayId" : {"Ref" : "raingodsIgw"},
+        "VpcId" : {"Ref" : "raingodsVpc"}
+      }
+    },
+    "raingodsDhcp" : {
+      "Type" : "AWS::EC2::DHCPOptions",
+      "Properties" : {
+        "DomainName" : "raingods.net",
+        "DomainNameServers" : [ "AmazonProvidedDNS" ],
+        "NtpServers" : [ "50.22.155.163", "171.66.97.126", "129.250.35.250", "97.107.129.217" ]
+      }
+    },
+    "DhcpVpcAssociation" : {
+      "Type" : "AWS::EC2::VPCDHCPOptionsAssociation",
+      "Properties" : {
+        "DhcpOptionsId" : {"Ref" : "raingodsDhcp"},
+        "VpcId" : {"Ref" : "raingodsVpc"}
+      }
+    },
+    "raingodsVpc" : {
+      "Type" : "AWS::EC2::VPC",
+      "Properties" : {
+        "CidrBlock" : "172.17.0.0/20",
+        "EnableDnsSupport" : "true",
+        "EnableDnsHostnames" : "true",
+        "InstanceTenancy" : "default",
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "VPC for raingods.net"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "raingods.net"
+          }
+        ]
+      }
+    },
+    "raingodsPublic" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock" : "172.17.1.0/24",
+        "VpcId" : {"Ref" : "raingodsVpc"},
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Public subnet for raingods.net"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "raingods.net"
+          }
+        ]
+      }
+    },
+    "raingodsPrivate" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock" : "172.17.3.0/24",
+        "VpcId" : {"Ref" : "raingodsVpc"},
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "Private subnet for raingods.net"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "raingods.net"
+          }
+        ]
+      }
+    }
+  },
+
+  "Outputs" : {
+    "VpcInfo" : {
+      "Description" : "VPC Information",
+      "Value" : { "Ref" : "raingodsVpc"}
+    },
+    "raingodsPublicSubnet" : {
+      "Description" : "Public subnet for raingods.net",
+      "Value" : {"Ref" : "raingodsPublic"}
+    },
+    "raingodsPrivateSubnet" : {
+      "Description" : "Private subnet for raingods.net",
+      "Value" : {"Ref" : "raingodsPrivate"}
+    }
+  }
+}
