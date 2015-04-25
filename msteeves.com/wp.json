@@ -1,0 +1,25 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Template JSON file for CloudFormation",
+
+  "Parameters" : {
+
+  },
+
+  "Mappings" : {
+
+  },
+
+  "Conditions" : {
+
+  },
+  
+  "Resources" : {
+
+  },
+
+  "Outputs" : {
+
+  }
+}
