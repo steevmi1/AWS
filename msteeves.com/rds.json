@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "Template JSON file for CloudFormation",
+  "Description" : "CloudFormation template to set up RDS services for msteeves.com domain",
 
   "Parameters" : {
 
@@ -16,7 +16,93 @@
   },
   
   "Resources" : {
-
+    "RdsSubnet1" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : { "Fn::Select" : ["0", {"Fn::GetAZs" : ""}]},
+        "CidrBlock" : "172.16.10.0/26",
+        "VpcId" : "vpc-3971d95c",
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "RDS Subnet 1"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Database"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "msteeves.com"
+          }
+        ]
+      }
+    },
+    "RdsSubnet2" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : { "Fn::Select" : ["1", {"Fn::GetAZs" : ""}]},
+        "CidrBlock" : "172.16.10.64/26",
+        "VpcId" : "vpc-3971d95c",
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "RDS Subnet 2"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Database"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "msteeves.com"
+          }
+        ]
+      }
+    },
+    "RdsSubnet3" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "AvailabilityZone" : { "Fn::Select" : ["2", {"Fn::GetAZs" : ""}]},
+        "CidrBlock" : "172.16.10.128/26",
+        "VpcId" : "vpc-3971d95c",
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "RDS Subnet 3"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Database"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "msteeves.com"
+          }
+        ]
+      }
+    },
+    "RdsSubnetGroup" : {
+      "Type" : "AWS::RDS::DBSubnetGroup",
+      "Properties" : {
+        "DBSubnetGroupDescription" : "RDS subnet group for all of msteeves.com",
+        "SubnetIds" : [{"Ref" : "RdsSubnet1"}, {"Ref" : "RdsSubnet2"}, {"Ref" : "RdsSubnet3"} ],
+        "Tags" : [
+          {
+            "Key" : "Name",
+            "Value" : "RDS subnet group for msteeves.com"
+          },
+          {
+            "Key" : "Component",
+            "Value" : "Infrastructure"
+          },
+          {
+            "Key" : "Domain",
+            "Value" : "msteeves.com"
+          }
+        ]
+      }
+    },
   },
 
   "Outputs" : {
