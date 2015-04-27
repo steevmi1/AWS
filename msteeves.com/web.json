@@ -1,0 +1,25 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "CloudFormation for web services for msteeves.com.",
+
+  "Parameters" : {
+
+  },
+
+  "Mappings" : {
+
+  },
+
+  "Conditions" : {
+
+  },
+  
+  "Resources" : {
+
+  },
+
+  "Outputs" : {
+
+  }
+}
