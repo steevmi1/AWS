@@ -4,7 +4,11 @@
   "Description" : "CloudFormation for web services for msteeves.com.",
 
   "Parameters" : {
-
+    "KeyName" : {
+      "Description" : "AWS keypair for ssh access",
+      "Type" : "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription" : "Must be a valid EC2 key pair"
+    }
   },
 
   "Mappings" : {
