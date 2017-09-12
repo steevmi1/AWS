@@ -1,0 +1,45 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Route53 DNS setup and layout for steeves.io domain",
+
+  "Metadata" : {
+
+  },
+  
+  "Parameters" : {
+  },
+
+  "Mappings" : {
+
+  },
+
+  "Conditions" : {
+
+  },
+
+  "Resources" : {
+    "DNS" : {
+      "Type" : "AWS::Route53::HostedZone",
+      "Properties" : {
+        "Name" : "steeves.io",
+        "HostedZoneTags" : [
+          {"Key" : "Domain", "Value" : "steeves.io"},
+          {"Key" : "Type", "Value" : "BasicInfrastructure"}
+        ]
+      }
+    }
+  },
+
+  "Outputs" : {
+    "HostedZoneId" : {
+      "Description" : "The ID of the hosted zone.",
+      "Value" : {
+        "Ref" : "DNS"
+      },
+      "Export" : {
+        "Name" : "HostedZone"
+      }
+    }
+  }
+}
