@@ -1,0 +1,97 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Route53 DNS setup and layout for steeves.io domain",
+
+  "Metadata" : {
+
+  },
+  
+  "Parameters" : {
+    "Domain": {
+      "Type" : "String",
+      "Default" : "steeves.io"
+    }
+  },
+
+  "Mappings" : {
+
+  },
+
+  "Conditions" : {
+
+  },
+
+  "Resources" : {
+    "DNS" : {
+      "Type" : "AWS::Route53::HostedZone",
+      "Properties" : {
+        "Name" : {"Ref" : "Domain"},
+        "HostedZoneTags" : [
+          {"Key" : "Domain", "Value" : "steeves.io"},
+          {"Key" : "Type", "Value" : "BasicInfrastructure"}
+        ]
+      }
+    },
+    "MX" : {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+        "HostedZoneId" : {"Ref" : "DNS"},
+        "Name" : {"Ref": "Domain"},
+        "ResourceRecords" : [
+          "10 mail.protonmail.ch"
+        ],
+        "Type" : "MX",
+        "TTL" : "300"
+      }
+    },
+    "SPF" : {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+        "HostedZoneId" : {"Ref" : "DNS"},
+        "Name" : {"Ref" : "Domain"},
+        "ResourceRecords" : [
+          "\"v=spf1 include:_spf.protonmail.ch mx ~all\""
+        ],
+        "Type" : "SPF",
+        "TTL" : "300"
+      }
+    },
+    "TXT" : {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+        "HostedZoneId" : {"Ref" : "DNS"},
+        "Name" : {"Ref" : "Domain"},
+        "ResourceRecords" : [
+          "\"protonmail-verification=3a958c6453998dd670e0d55f7caacb3205ddf3c6\""
+        ],
+        "Type" : "TXT",
+        "TTL" : "300"
+      }
+    },
+    "DKIM" : {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+        "HostedZoneId" : {"Ref" : "DNS"},
+        "Name" : {"Fn::Join" : [".", ["protonmail._domainkey" , {"Ref" : "Domain"}]]},
+        "ResourceRecords" : [
+          "\"v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDJDVxPiJB1C01KgFKyCH1QczKAYdyvViAQNCmJ2fUFJxVg9s2vadn29NTJsWdxDwPCeZvjvAbK79MUYFqbDYELT6Av4gvnFgq6QK1/ugPHb0n+W4aez0CHM2ugNy/De8Pf83vcIWd7jrg/iAEVCLdiC8cYFacABcQaQLxsxq0MXwIDAQAB\""
+        ],
+        "Type" : "TXT",
+        "TTL" : "300"
+      }
+    }
+  },
+
+  "Outputs" : {
+    "HostedZoneId" : {
+      "Description" : "The ID of the hosted zone.",
+      "Value" : {
+        "Ref" : "DNS"
+      },
+      "Export" : {
+        "Name" : "steevesioHostedZone"
+      }
+    }
+  }
+}
