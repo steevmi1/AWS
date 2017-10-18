@@ -45,25 +45,14 @@
         "TTL" : "300"
       }
     },
-    "SPF" : {
-      "Type" : "AWS::Route53::RecordSet",
-      "Properties" : {
-        "HostedZoneId" : {"Ref" : "DNS"},
-        "Name" : {"Ref" : "Domain"},
-        "ResourceRecords" : [
-          "\"v=spf1 include:_spf.protonmail.ch mx ~all\""
-        ],
-        "Type" : "SPF",
-        "TTL" : "300"
-      }
-    },
     "TXT" : {
       "Type" : "AWS::Route53::RecordSet",
       "Properties" : {
         "HostedZoneId" : {"Ref" : "DNS"},
         "Name" : {"Ref" : "Domain"},
         "ResourceRecords" : [
-          "\"protonmail-verification=3a958c6453998dd670e0d55f7caacb3205ddf3c6\""
+          "\"protonmail-verification=3a958c6453998dd670e0d55f7caacb3205ddf3c6\"",
+          "\"v=spf1 include:_spf.protonmail.ch mx ~all\""
         ],
         "Type" : "TXT",
         "TTL" : "300"
