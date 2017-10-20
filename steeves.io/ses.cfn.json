@@ -1,0 +1,79 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Set up SES for steeves.io domain",
+
+  "Metadata" : {
+
+  },
+  
+  "Parameters" : {
+    "Domain" : {
+      "Type" : "String",
+      "Default" : "steeves.io"
+    }
+  },
+
+  "Mappings" : {
+
+  },
+
+  "Conditions" : {
+
+  },
+  
+  "Resources" : {
+    "sesTXT" : {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+        "HostedZoneId" : {"Fn::ImportValue" : "steevesioHostedZone"},
+        "Name" : {"Fn::Join" : [".", ["_amazonses", {"Ref" : "Domain"}]]},
+        "ResourceRecords" : [
+          "\"dN/nQUi+9j2YQPf1JJeMI4j7NLdN5T1fMiI7FtLQdBU=\""
+        ],
+        "Type" : "TXT",
+        "TTL" : "300"
+      }
+    },
+    "DKIM1" : {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+        "HostedZoneId" : {"Fn::ImportValue" : "steevesioHostedZone"},
+        "Name" : {"Fn::Join" : [".", ["okusw66367qneah4vd2swos2xmp7t3lz._domainkey", {"Ref" : "Domain"}]]},
+        "ResourceRecords" : [
+          "okusw66367qneah4vd2swos2xmp7t3lz.dkim.amazonses.com"
+        ],
+        "Type" : "CNAME",
+        "TTL" : "300"
+      }
+    },
+    "DKIM2" : {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+        "HostedZoneId" : {"Fn::ImportValue" : "steevesioHostedZone"},
+        "Name" : {"Fn::Join" : [".", ["nejlfr2u2lotbfd2l4rzjky4k3r4xupm._domainkey", {"Ref" : "Domain"}]]},
+        "ResourceRecords" : [
+          "nejlfr2u2lotbfd2l4rzjky4k3r4xupm.dkim.amazonses.com"
+        ],
+        "Type" : "CNAME",
+        "TTL" : "300"
+      }
+    },
+    "DKIM3" : {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+        "HostedZoneId" : {"Fn::ImportValue" : "steevesioHostedZone"},
+        "Name" : {"Fn::Join" : [".", ["2lwzfrkjux22oljx7ssa63axxol4qoxa._domainkey", {"Ref" : "Domain"}]]},
+        "ResourceRecords" : [
+          "2lwzfrkjux22oljx7ssa63axxol4qoxa.dkim.amazonses.com"
+        ],
+        "Type" : "CNAME",
+        "TTL" : "300"
+      }
+    }
+  },
+
+  "Outputs" : {
+
+  }
+}
